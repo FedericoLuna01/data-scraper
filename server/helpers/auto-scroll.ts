@@ -4,12 +4,13 @@ export async function autoScroll(page: puppeteer.Page) {
   await page.evaluate(async () => {
     const wrapper = document.querySelector('div[role="feed"]');
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       var totalHeight = 0;
       var distance = 1000;
       var scrollDelay = 3000;
 
       var timer = setInterval(async () => {
+        if (!wrapper) return;
         var scrollHeightBefore = wrapper.scrollHeight;
         wrapper.scrollBy(0, distance);
         totalHeight += distance;
