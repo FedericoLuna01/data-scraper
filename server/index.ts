@@ -9,7 +9,8 @@ const app = new Hono()
 
 app.use(logger())
 
-const apiRoutes = app.basePath("/api")
+const apiRoutes = app
+  .basePath("/api")
   .route("/scrape", scrapeRoute)
 
 // app.get('*', serveStatic({ root: './frontend/dist' }))
@@ -22,3 +23,5 @@ serve({
   fetch: app.fetch,
   port
 })
+
+export type AppType = typeof apiRoutes
