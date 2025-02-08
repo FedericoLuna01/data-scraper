@@ -39,7 +39,7 @@ export const scrapeRoute = new Hono()
       }
 
       // Scroll toda la pagina
-      // await autoScroll(page);
+      await autoScroll(page);
 
       const { results, layoutWithoutWebsite } = await page.evaluate(() => {
         const results: Result[] = [];

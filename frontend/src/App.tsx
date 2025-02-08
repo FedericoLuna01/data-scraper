@@ -13,9 +13,15 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { getData } from "./lib/api"
-
+import { useMutation } from "@tanstack/react-query"
+import { Result } from "@server/types/types"
+import { useState } from "react"
+import { DataTable } from "./components/data-table"
+import { columns } from "./components/columns"
+import { Spinner } from "./components/ui/spinner"
 
 function App() {
+  const [data, setData] = useState<Result[] | null>([])
   const formSchema = z.object({
     query: z.string().min(2).max(100),
   })
@@ -27,10 +33,18 @@ function App() {
     },
   })
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (query: string) => await getData(query),
+    onSuccess: async (data) => {
+      setData(data)
+    }
+  })
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const data = await getData(values.query)
-    console.log(values, data);
+    mutate(values.query)
   }
+
+  // TODO: Agregar posibilidad de descargar los datos
 
   return (
     <div className='container mx-auto flex items-center justify-center flex-col'>
@@ -52,6 +66,7 @@ function App() {
                     <Input
                       placeholder="Paisajismo Rosario"
                       className="w-96"
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -59,12 +74,28 @@ function App() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Buscar</Button>
+            <Button
+              disabled={isPending}
+              type="submit"
+            >
+              {
+                isPending ? "Buscando..." : "Buscar"
+              }
+              {
+                isPending && (
+                  <Spinner size="small" show={true} className="text-black" />
+                )
+              }
+            </Button>
           </form>
         </Form>
       </div>
-      <div>
-        Tabla
+      <div className="w-full my-10">
+        {
+          data && (
+            <DataTable isLoading={isPending} columns={columns} data={data} />
+          )
+        }
       </div>
     </div>
   )
