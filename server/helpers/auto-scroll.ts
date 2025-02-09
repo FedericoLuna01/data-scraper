@@ -1,10 +1,10 @@
-import puppeteer from "puppeteer";
+import type { Page } from "puppeteer";
 
-export async function autoScroll(page: puppeteer.Page) {
+export async function autoScroll(page: Page) {
   await page.evaluate(async () => {
     const wrapper = document.querySelector('div[role="feed"]');
 
-    await new Promise<void>((resolve, reject) => {
+    await new Promise<void>((resolve) => {
       var totalHeight = 0;
       var distance = 1000;
       var scrollDelay = 3000;

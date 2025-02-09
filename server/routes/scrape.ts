@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import puppeteerExtra from "puppeteer-extra";
 import stealthPlugin from "puppeteer-extra-plugin-stealth";
-import puppeteer from "puppeteer"
+import type { Browser } from "puppeteer"
 import { autoScroll } from '../helpers/auto-scroll.js';
 import type { Result } from '../types/types.js';
 import { zValidator } from "@hono/zod-validator";
@@ -27,7 +27,7 @@ export const scrapeRoute = new Hono()
       const browser = await puppeteerExtra.launch({
         headless: false,
         executablePath: "", // your path here
-      }) as puppeteer.Browser;
+      }) as Browser;
 
       const page = await browser.newPage();
       try {
