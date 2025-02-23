@@ -24,6 +24,10 @@ export const columns: ColumnDef<Result>[] = [
   {
     accessorKey: "phone",
     header: "Teléfono",
+    filterFn: (row, id, value: string[]) => {
+      const hasPhone = Boolean(row.getValue(id))
+      return value.includes(hasPhone.toString())
+    },
     cell: ({ row }) => {
       const { phone } = row.original
       if (!phone) return <div className="text-muted-foreground">Sin celular</div>
@@ -41,6 +45,10 @@ export const columns: ColumnDef<Result>[] = [
   {
     accessorKey: "website",
     header: "Sitio web",
+    filterFn: (row, id, value: string[]) => {
+      const hasWebsite = Boolean(row.getValue(id))
+      return value.includes(hasWebsite.toString())
+    },
     cell: ({ row }) => {
       const { website } = row.original
       if (!website) return <div className="text-muted-foreground">Sin sitio web</div>
@@ -49,7 +57,6 @@ export const columns: ColumnDef<Result>[] = [
           <a href={website} className="hover:underline text-blue-400">
             {website}
           </a>
-
         </p>
       )
     }

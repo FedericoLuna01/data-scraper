@@ -44,8 +44,6 @@ function App() {
     mutate(values.query)
   }
 
-  // TODO: Agregar posibilidad de descargar los datos
-
   return (
     <div className='container mx-auto flex items-center justify-center flex-col'>
       <h1 className="text-5xl font-bold my-20">

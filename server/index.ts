@@ -3,7 +3,7 @@ import { Hono } from 'hono'
 
 import { logger } from 'hono/logger';
 import { scrapeRoute } from './routes/scrape.js';
-import { serveStatic } from 'hono/serve-static';
+import { serveStatic } from '@hono/node-server/serve-static'
 
 const app = new Hono()
 
@@ -13,9 +13,7 @@ const apiRoutes = app
   .basePath("/api")
   .route("/scrape", scrapeRoute)
 
-// @ts-ignore
 app.get('*', serveStatic({ root: './frontend/dist' }))
-// @ts-ignore
 app.get('*', serveStatic({ path: './frontend/dist/index.html' }))
 
 const port = 3000
