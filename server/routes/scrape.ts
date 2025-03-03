@@ -6,6 +6,8 @@ import { autoScroll } from '../helpers/auto-scroll.js';
 import type { Result } from '../types/types.js';
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer";
 
 // @ts-ignore
 puppeteerExtra.use(stealthPlugin());
@@ -23,10 +25,13 @@ export const scrapeRoute = new Hono()
 
       if (!query) return c.json("No query provided", 400);
 
+      const isLocal = !!process.env.CHROME_EXECUTABLE_PATH;
       // @ts-ignore
       const browser = await puppeteerExtra.launch({
         headless: false,
-        executablePath: "", // your path here
+        args: isLocal ? puppeteer.defaultArgs() : [...chromium.args, "--hide-scrollbars", "--no-sandbox", "--disabled-setupid-sandbox"],
+        defaultViewport: chromium.defaultViewport,
+        executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
       }) as Browser;
 
       const page = await browser.newPage();

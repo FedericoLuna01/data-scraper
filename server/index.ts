@@ -4,6 +4,7 @@ import { Hono } from 'hono'
 import { logger } from 'hono/logger';
 import { scrapeRoute } from './routes/scrape.js';
 import { serveStatic } from '@hono/node-server/serve-static'
+import 'dotenv/config';
 
 const app = new Hono()
 
@@ -21,7 +22,8 @@ console.log(`Server is running on http://localhost:${port}`)
 
 serve({
   fetch: app.fetch,
-  port
+  port,
+  hostname: '0.0.0.0'
 })
 
 export type AppType = typeof apiRoutes
