@@ -17,12 +17,12 @@ const apiRoutes = app
 app.get('*', serveStatic({ root: './frontend/dist' }))
 app.get('*', serveStatic({ path: './frontend/dist/index.html' }))
 
-const port = 3000
+const port = process.env.PORT || 3000
 console.log(`Server is running on http://localhost:${port}`)
 
 serve({
   fetch: app.fetch,
-  port,
+  port: Number(port),
   hostname: '0.0.0.0'
 })
 
