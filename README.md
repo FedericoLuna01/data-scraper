@@ -1,8 +1,6 @@
-```
-npm install
-npm run dev
-```
+# Maps Scraper
 
-```
-open http://localhost:3000
-```
+# How to run
+
+1. `npm i && npm run dev`
+2. `cd frontend && npm i && npm run dev`

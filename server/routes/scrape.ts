@@ -6,7 +6,6 @@ import { autoScroll } from '../helpers/auto-scroll.js';
 import type { Result } from '../types/types.js';
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
-import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer";
 
 // @ts-ignore
@@ -28,10 +27,11 @@ export const scrapeRoute = new Hono()
       const isLocal = !!process.env.CHROME_EXECUTABLE_PATH;
       // @ts-ignore
       const browser = await puppeteerExtra.launch({
-        headless: false,
-        args: isLocal ? puppeteer.defaultArgs() : [...chromium.args, "--hide-scrollbars", "--no-sandbox", "--disabled-setupid-sandbox"],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
+        headless: true,
+        // args: isLocal ? puppeteer.defaultArgs() : [...chromium.args, "--hide-scrollbars", "--no-sandbox", "--disabled-setupid-sandbox"],
+        // args: isLocal ? puppeteer.defaultArgs : ["--no-sandbox", "--disable-setuid-sandbox"],
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        executablePath: process.env.CHROME_EXECUTABLE_PATH || "/usr/bin/google-chrome",
       }) as Browser;
 
       const page = await browser.newPage();
